@@ -10,21 +10,14 @@
 </div>
 
 <div x-data="{
-    people:[
-        {
-            name:'John',
-            image:'https://via.placeholder.com/150'
-        },
-        {
-            name:'Jeff',
-            image:'https://via.placeholder.com/150'
-        }
-    ]
-}">
+    people:[],
+    showImages: true
+}" x-init="people = await(await fetch('/people/')).json()">
+    <button @click="showImages =!showImages" x-text="showImages ? 'Hide images':'Show images'">Toggle Images</button>
     <template x-for="person in people">
         <div>
-            <p x-text="person.name"></p>
-            <img :src="person.image" />
+            <p x-text="person.name" :class="person.name.startsWith('M') ? 'text-danger':'text-success'"></p>
+            <img x-show="showImages" :src="person.image" x-transition.duration.1500ms />
         </div>
     </template>
 
